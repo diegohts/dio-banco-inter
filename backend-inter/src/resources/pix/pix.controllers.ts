@@ -29,6 +29,6 @@ export default class UserController {
         const pixService = new PixService();
         const transactions = await pixService.transactions(req.user);
 
-        return res.status(201).send({transactions})
+        return res.status(200).send({transactions})
     }
 }
