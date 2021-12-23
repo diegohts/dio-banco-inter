@@ -7,7 +7,7 @@ interface IContextData {
     user: IUserDto;
     userSignIn: (userData: SignInData) => Promise<IUserDto>;
     userSignUp: (userData: SignUpData) => Promise<IUserDto>;
-    me: () => Promise<AxiosResponse<IUserDto, any>>;
+    getCurrentUser: () => Promise<IUserDto>;
 }
 
 export const AuthContext = createContext<IContextData>({} as IContextData)
@@ -54,7 +54,7 @@ export const AuthProvider: React.FC = ({children}) => {
     }
 
     return(
-        <AuthContext.Provider value={{ user, userSignIn, userSignUp, me }}>
+        <AuthContext.Provider value={{ user, userSignIn, userSignUp, getCurrentUser }}>
             {children}
         </AuthContext.Provider>
     ) 
