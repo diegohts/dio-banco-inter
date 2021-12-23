@@ -11,6 +11,8 @@ const Header = () => {
     const navigate = useNavigate();
     const { user } = useAuth();
 
+    const initials = user.firstName.substring(0,1)+user.lastName.substring(0,1)
+
     const handleLogoff = () => {
         navigate('/signin')
     }
@@ -19,7 +21,7 @@ const Header = () => {
             <HeaderWrapper>
                    <img src={logoInter} width={172} height={61} alt="logo inter" />
                 <UserInfo>
-                  <UserCircle initials="PF" />
+                  <UserCircle initials={initials} />
                   <div>
                       <p>Olá, <span className="primary-color font-bold">{ user.firstName } { user.lastName }</span></p>
                       <strong>{user.accountNumber}-{user.accountDigit}</strong><br/>
