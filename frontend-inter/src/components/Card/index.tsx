@@ -1,6 +1,5 @@
 import {CardContainer} from './styles';
 
-
 interface CardProps {
     width?: string,
     children?: React.ReactNode;

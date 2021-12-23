@@ -1,18 +1,42 @@
-import {Wrapper, Background, InputContainer, ButtonContainer} from './styles';
+import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 
-import background from '../../assets/images/background-login.jpg';
-import logoInter from '../../assets/images/Inter-orange.png';
+import useAuth from '../../hooks/useAuth';
+
+import {Wrapper, Background, InputContainer, ButtonContainer} from './styles';
 
 import Card from '../../components/Card';
 import Input from '../../components/Input';
 import Button from '../../components/Button';
 
-const SignIn = () => {
-    const navigate = useNavigate();
+import background from '../../assets/images/background-login.jpg';
+import logoInter from '../../assets/images/Inter-orange.png';
 
-    const handleToSingIn = () => {
-        navigate('/dashboard')
+
+
+const SignIn = () => {
+
+    const [ email, setEmail ] = useState('');
+    const [ password, setPassword ] = useState('');
+
+    const navigate = useNavigate();
+    const { userSignIn } = useAuth();
+
+
+    const handleToSingIn = async () => {
+        const data = {
+            email,
+            password
+        }
+
+        const response = await userSignIn(data);
+
+        if(response.id){
+            navigate('/dashboard');
+            return;
+        }
+
+        alert('Usuário ou senha inválida!')
     }
     return (
         <Wrapper>
@@ -21,8 +45,8 @@ const SignIn = () => {
                 <img src={logoInter} width={172} height={61} alt="logo inter" />
 
                 <InputContainer>
-                    <Input placeholder="EMAIL"/>
-                    <Input placeholder="SENHA" type="password"/>
+                    <Input placeholder="EMAIL" value={email} onChange={e => setEmail(e.target.value)}/>
+                    <Input placeholder="SENHA" type="password" value={password} onChange={e => setPassword(e.target.value)}/>
                 </InputContainer>
 
                 <ButtonContainer>

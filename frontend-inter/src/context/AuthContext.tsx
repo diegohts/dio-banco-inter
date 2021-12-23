@@ -1,28 +1,28 @@
-import { createContext, useEffect, useState, useCallback } from "react";
+import { AxiosResponse } from "axios";
+import { createContext, useState } from "react";
 
-import { signIn, signUp, SignInData, SignUpData, me } from '../services/resources/user';
+import { signIn, signUp, SignInData, SignUpData, me, IUserDto } from '../services/resources/user';
 
-interface UserDto {
-    id: string;
-    firstName: string;
-    lastName: String;
-    accountNumber: number;
-    accountDigit: number;
-    wallet: number;
-    email: string;
+interface IContextData {
+    user: IUserDto;
+    userSignIn: (userData: SignInData) => Promise<IUserDto>;
+    userSignUp: (userData: SignUpData) => Promise<IUserDto>;
+    me: () => Promise<AxiosResponse<IUserDto, any>>;
 }
 
-interface ContextData {
-    user: UserDto;
-    userSignIn: (userData: SignInData) => void;
-    userSignUp: (userData: SignUpData) => void;
-}
-
-export const AuthContext = createContext<ContextData>({} as ContextData)
+export const AuthContext = createContext<IContextData>({} as IContextData)
 
 export const AuthProvider: React.FC = ({children}) => {
 
-    const[user, setUser] = useState<UserDto>({} as UserDto);
+    const[user, setUser] = useState<IUserDto>(() => {
+        const user = localStorage.getItem('@Inter:User');
+
+        if(user) {
+          return JSON.parse(user);
+        }
+    
+        return {} as IUserDto;
+      });
 
     const userSignIn = async (userData: SignInData) => {
         const {data} = await signIn(userData);
@@ -35,12 +35,13 @@ export const AuthProvider: React.FC = ({children}) => {
             localStorage.setItem('@Inter:Token', data.accessToken);
         }
 
-        await getCurrentUser();
+        return getCurrentUser();
     }
 
     const getCurrentUser = async () => {
         const {data} = await me();
-        setUser(data)
+        setUser(data);
+        localStorage.setItem('@Inter:User', JSON.stringify(user));
         return data;
     }
 
@@ -49,11 +50,11 @@ export const AuthProvider: React.FC = ({children}) => {
 
         localStorage.setItem('@Inter:Token', data.accessToken);
 
-        await getCurrentUser();
+        return getCurrentUser();
     }
 
     return(
-        <AuthContext.Provider value={{ user, userSignIn, userSignUp }}>
+        <AuthContext.Provider value={{ user, userSignIn, userSignUp, me }}>
             {children}
         </AuthContext.Provider>
     ) 

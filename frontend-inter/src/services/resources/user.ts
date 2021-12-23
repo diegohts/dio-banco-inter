@@ -2,7 +2,7 @@ import api  from '../api';
 
 export interface SignInData {
     email: string;
-    senha: string;
+    password: string;
 }
 
 export interface SignUpData {
@@ -12,12 +12,22 @@ export interface SignUpData {
     senha: string;
 }
 
+export interface IUserDto {
+    id: string;
+    firstName: string;
+    lastName: String;
+    accountNumber: number;
+    accountDigit: number;
+    wallet: number;
+    email: string;
+}
+
 export const signIn = async (data: SignInData) => {
     return api.post('/user/signin', data);
 }
 
 export const me = async () => {
-    return api.get('/user/signup');
+    return api.get<IUserDto>('/user/me');
 }
 
 export const signUp = async (data: SignUpData) => {
