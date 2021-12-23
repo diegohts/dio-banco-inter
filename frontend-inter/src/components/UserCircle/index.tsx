@@ -1,6 +1,5 @@
 import {CircleContainer} from './styles';
 
-
 interface UserInfo {
     initials: string;
 }
