@@ -43,8 +43,8 @@ const Dashboard = () => {
           const { data } = await pay(key);
     
           if(data.msg) {
-            alert('Pagamento Realizado com o sucesso!');
-            setMessagePayment('Pagamento Realizado com o sucesso!');
+            alert('Pagamento efetuado com sucesso!');
+            setMessagePayment('Pagamento efetuado com sucesso!');
             return;
           }
     
@@ -52,8 +52,8 @@ const Dashboard = () => {
           return setMessagePayment('Não foi possível realizar o pagamento!');
         } catch (e) {
           console.log(e);
-            setMessagePayment('Não é possível realizar o pagamento para o mesmo usuário!');
-            alert('Não é possível realizar o pagamento para o mesmo usuário!');
+            setMessagePayment('Não é possível receber o PIX do mesmo usuário!');
+            alert('Não é possível receber o PIX do mesmo usuário!');
         }
       }
 

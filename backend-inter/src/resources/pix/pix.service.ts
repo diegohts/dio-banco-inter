@@ -32,7 +32,7 @@ export default class PixService {
        const keyDecoded = decodeKey(key)
 
        if(keyDecoded.userId === user.id){
-           throw new AppError("Não é possivel receber o PIX do mesmo usuário",401)
+           throw new AppError("Não é possivel receber o PIX do mesmo usuário!",401)
        }
 
        const pixRepository = getRepository(Pix); 
@@ -82,7 +82,7 @@ export default class PixService {
     const received = pixReceived.map(transaction => ({
         value: transaction.value, 
         user: {
-            firstname: transaction.payingUser.firstName,
+            firstName: transaction.payingUser.firstName,
             lastName: transaction.payingUser.lastName,
         },
         updatedAt: transaction.updatedAt,
@@ -92,7 +92,7 @@ export default class PixService {
     const paying = pixPaying.map(transaction => ({
         value: transaction.value, 
         user: {
-            firstname: transaction.requestingUser.firstName,
+            firstName: transaction.requestingUser.firstName,
             lastName: transaction.requestingUser.lastName,
         },
         updatedAt: transaction.updatedAt,
